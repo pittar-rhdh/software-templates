@@ -60,4 +60,4 @@ spec:
   output:
     links:
       - title: Repository
-        url: 'https://github.com/${{ parameters.githubAccountName }}/${{ parameters.repoName }}'
+        url: 'https://github.com/pittar-rhdh/${{ parameters.repoName }}'

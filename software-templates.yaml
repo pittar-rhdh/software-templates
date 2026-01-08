@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: github-software-template-collection
+  description: A collection of Backstage Golden Path Templates for Github
+spec:
+  type: url
+  targets:
+    - https://dev.azure.com/pittar-demos/rhdh-demo/_git/software-templates?path=/gpts/azure/vms/fedora/template.yaml

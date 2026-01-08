@@ -6,4 +6,4 @@ metadata:
 spec:
   type: url
   targets:
-    - https://dev.azure.com/pittar-demos/rhdh-demo/_git/software-templates?path=/gpts/azure/vms/fedora/template.yaml
+    - https://github.com/pittar-rhdh/software-templates/blob/main/gpts/github/python/basic/template.yaml

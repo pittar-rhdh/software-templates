@@ -55,8 +55,50 @@ spec:
         repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=pittar-rhdh'
         repoVisibility: public
         description: Repository created by Backstage template
-        topics: ['backstage', 'template']
-
+        topics: ['backstage', 'template', 'python']
+    - id: create-webhook
+      name: Create GitHub Webhook
+      action: github:webhook
+      input:
+        # Use the URL of the repository created in the previous step
+        repoUrl: ${{ steps['publish-repository'].output.remoteUrl }}
+        # The URL of your Tekton EventListener (exposed via Route/Ingress)
+        webhookUrl: ${{ parameters.webhookUrl }}
+        # (Optional) A secret token to validate the payload in Tekton
+        webhookSecret: ${{ parameters.webhookSecret }}
+        # events: ['push'] # Default is 'push', add 'pull_request' if needed
+        contentType: json
+        insecureSsl: false
+        # Define your specific triggers here
+        events: 
+          - push
+          - pull_request
+    - id: fetch-gitops-common
+      name: Fetch Common GitOps Template
+      action: fetch:template
+      input:
+        url: ../../../common/gitops-skeleton
+        targetPath: .
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+    - id: fetch-gitops-python
+      name: Fetch Python GitOps Template
+      action: fetch:template
+      input:
+        url: ./gitops
+        targetPath: ./overlays
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+    - id: publish-gitops-repository
+      name: Publish GitOps Repository
+      action: publish:github
+      input:
+        repoUrl: 'github.com?repo=${{ parameters.repoName }}-gitops&owner=pittar-rhdh'
+        repoVisibility: public
+        description: Repository created by Backstage template
+        topics: ['backstage', 'template', 'gitops']
   output:
     links:
       - title: Repository

@@ -1,0 +1,9 @@
+namespace: ${{values.name}}-gitops
+
+resources:
+  - githubsecret.yaml
+  - triggerbinding.yaml
+  - triggertemplate.yaml
+  - trigger.yaml 
+  - eventlistener.yaml
+  - eventlistenerroute.yaml

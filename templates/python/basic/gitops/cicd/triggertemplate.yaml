@@ -1,0 +1,35 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: build-template
+spec:
+  # Parameters passed from the TriggerBinding
+  params:
+    - name: pr-number
+      description: The Pull Request ID
+    - name: git-repo-fullname
+      description: The repository owner/name (e.g. pittar-sandbox/image-inspector)
+
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        generateName: build-run-
+        labels:
+          tekton.dev/pipeline: build
+          triggers.tekton.dev/event: "push"
+      spec:
+        pipelineRef:
+          name: build
+        
+        # Mapping Template params to Pipeline params
+        params:
+          - name: PR_NUMBER
+            value: $(tt.params.pr-number)
+          - name: GIT_REPO
+            value: $(tt.params.git-repo-fullname)
+
+        # Mapping the Pipeline workspace to the emptyDir
+        workspaces:
+          - name: workspace
+            emptyDir: {}

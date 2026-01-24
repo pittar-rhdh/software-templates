@@ -1,0 +1,6 @@
+namespace: ${{values.name}}-gitops
+
+resources:
+  - triggerbinding.yaml
+  - triggertemplate.yaml
+  - trigger.yaml 

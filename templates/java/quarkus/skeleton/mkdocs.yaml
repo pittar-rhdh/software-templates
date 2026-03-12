@@ -1,0 +1,10 @@
+site_name: ${{ values.componentId }}
+site_description: ${{ values.description }}
+repo_url: ${{ values.destination }}
+
+plugins:
+  - techdocs-core
+
+# Note for content editors, edit only the section below
+nav:
+  - ${{ values.componentId }} Documentation: index.md

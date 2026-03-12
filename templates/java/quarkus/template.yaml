@@ -1,0 +1,87 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: basic-quarkus
+  title: "Basic Quarkus Application"
+  description: Template to create a basic Quarkus application.
+  tags:
+    - quarkus
+    - starter
+spec:
+  owner: default/teamlead
+  type: service
+  parameters:
+    - title: Repository Information
+      required:
+        - repoName
+      properties:
+        repoName:
+          type: string
+          title: Repository Name
+    - title: Component Information
+      required:
+        - componentId
+        - name
+        - owner
+        - groupId
+        - description
+      properties:
+        componentId:
+          title: Project ID
+          type: string
+          description: Unique name of the Project. Lower case with no special characters.
+          default: mydemoapp
+          pattern: '^([a-z]*)*$'
+          ui:help: Used as the component ID, Maven artifact ID, namespace base, and part of the java package path.
+        name:
+          title: Name
+          type: string
+          description: Unique name of the component. Expecting a string that is sequences of [a-zA-Z0-9] separated by any of [-_.], at most 63 characters in total.
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+        groupId:
+          title: Group ID
+          type: string
+          default: ca.pitt.demo.idp
+          description: Maven Group ID eg (ca.pitt.demo).  Also used for package name.
+        description:
+          title: Description
+          type: string
+          description: Project description. Used in documentation.
+  steps:
+    - id: fetch
+      name: Fetch Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: .
+        values:
+          componentId: ${{ parameters.componentId }}
+          name: ${{ parameters.name }}
+          groupId: ${{ parameters.groupId }}
+          artifactId: ${{ parameters.componentId }}
+          javaPackageName: '${{ parameters.groupId | replace("\.", "/") }}/${{ parameters.componentId }}'
+          owner: ${{ parameters.owner }}
+          description: ${{ parameters.description }}
+          repo: ${{ parameters.repoName }}
+    - id: publish-repository
+      name: Publish Repository
+      action: publish:github
+      input:
+        repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=pittar-rhdh'
+        repoVisibility: public
+        description: Repository created by Backstage template
+        topics: ['backstage', 'template', 'quarkus']
+  output:
+    links:
+      - title: Repository
+        url: 'https://github.com/pittar-rhdh/${{ parameters.repoName }}'

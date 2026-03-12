@@ -19,10 +19,10 @@ projects:
       checkoutFrom:
         revision: "main"
         remote: origin
-ccomponents:
+components:
   - name: tools
     container:
-      image: registry.redhat.io/devspaces/udi-rhel9
+      image: registry.redhat.io/devspaces/udi-rhel9:latest
       env:
         - name: USE_JAVA21
           value: "true"

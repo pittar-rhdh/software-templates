@@ -60,7 +60,9 @@ spec:
       name: Register in Catalog
       action: catalog:register
       input:
-        catalogInfoUrl: ${{ steps['publish-repository'].output.remoteUrl }}/blob/main/catalog-info.yaml
+      input:
+        repoContentsUrl: ${{ steps['publish-repository'].output.repoContentsUrl }}
+        catalogInfoPath: catalog-info.yaml
   output:
     links:
       - title: Repository

@@ -8,3 +8,4 @@ spec:
   targets:
     - https://github.com/pittar-rhdh/software-templates/blob/main/templates/python/basic/template.yaml
     - https://github.com/pittar-rhdh/software-templates/blob/main/templates/java/quarkus/template.yaml
+    - https://github.com/pittar-rhdh/software-templates/blob/main/templates/basic/markdown/template.yaml

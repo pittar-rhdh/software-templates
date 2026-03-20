@@ -1,0 +1,30 @@
+schemaVersion: 2.2.2
+attributes:
+  controller.devfile.io/storage-type: per-workspace
+metadata:
+  name: "${{values.componentId}}"
+  provider: Andrew Pitt
+  displayName: Basic Markdown Repo
+  description: Basic Markdown Repo
+  tags:
+    - Markdown
+    - AI
+  projectType: Markdown
+  language: Markdown
+projects:
+  - name: "${{values.componentId}}"
+    git:
+      remotes:
+        origin: "https://github.com/pittar-rhdh/${{values.repo}}"
+      checkoutFrom:
+        revision: "main"
+        remote: origin
+ccomponents:
+  - name: tools
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel9
+      cpuLimit: '2'
+      cpuRequest: '0.2'
+      memoryLimit: '4G'
+      memoryRequest: '2G'
+      mountSources: true

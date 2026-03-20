@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{values.componentId}}
+  {%- if values.description %}
+  description: ${{values.description}}
+  {%- endif %}
+  annotations:
+    backstage.io/source-location: url:https://github.com/pittar-rhdh/${{values.repo}}
+    backstage.io/techdocs-ref: dir:.
+    #argocd/app-name: ${{values.componentId}}
+  tags:
+    - java
+    - quarkus
+  links:
+    - url: https://github.com/pittar-rhdh/${{ parameters.repo }}
+      title: Open in Dev Spaces
+      icon: web
+    - url: https://www.redhat.com/en/blog/channel/hybrid-cloud-infrastructure
+      title: Red Hat Blog
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: ${{values.owner}}

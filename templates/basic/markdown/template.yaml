@@ -71,13 +71,16 @@ spec:
         repoVisibility: public
         description: Repository created by Backstage template
         topics: ['backstage', 'template', 'markdown']
-    - action: catalog:register
-      id: register
-      name: Register
+    - id: register
+      name: Register in Catalog
+      action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publishSource.output.repoContentsUrl }}
-        catalogInfoPath: catalog-info.yaml
+        # We use the remoteUrl from the step above and append the filename
+        catalogInfoUrl: ${{ steps['publish-repository'].output.remoteUrl }}/blob/main/catalog-info.yaml
   output:
     links:
       - title: Repository
-        url: 'https://github.com/pittar-rhdh/${{ parameters.repoName }}'
+        url: ${{ steps['publish-repository'].output.remoteUrl }}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

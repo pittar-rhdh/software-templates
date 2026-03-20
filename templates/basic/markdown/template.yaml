@@ -1,12 +1,12 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: basic-quarkus
-  title: "Basic Quarkus Application"
-  description: Template to create a basic Quarkus application.
+  name: basic-markdown
+  title: "Basic Markdown Repository"
+  description: Template to create a basic Markdown repository.
   tags:
-    - quarkus
-    - starter
+    - Markdown
+    - AI
 spec:
   owner: default/teamlead
   type: service
@@ -29,9 +29,8 @@ spec:
           title: Project ID
           type: string
           description: Unique name of the Project. Lower case with no special characters.
-          default: mydemoapp
+          default: defaultproject
           pattern: '^([a-z]*)*$'
-          ui:help: Used as the component ID, Maven artifact ID, namespace base, and part of the java package path.
         name:
           title: Name
           type: string

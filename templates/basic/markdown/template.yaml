@@ -5,8 +5,8 @@ metadata:
   title: "Basic Markdown Repository"
   description: Template to create a basic Markdown repository.
   tags:
-    - Markdown
-    - AI
+    - markdown
+    - ai
 spec:
   owner: default/teamlead
   type: service

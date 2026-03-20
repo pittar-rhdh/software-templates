@@ -20,24 +20,9 @@ spec:
           title: Repository Name
     - title: Component Information
       required:
-        - componentId
-        - name
         - owner
         - description
       properties:
-        componentId:
-          title: Project ID
-          type: string
-          description: Unique name of the Project. Lower case with no special characters.
-          default: defaultproject
-          pattern: '^([a-z]*)*$'
-        name:
-          title: Name
-          type: string
-          description: Unique name of the component. Expecting a string that is sequences of [a-zA-Z0-9] separated by any of [-_.], at most 63 characters in total.
-          ui:autofocus: true
-          ui:options:
-            rows: 5
         owner:
           title: Owner
           type: string
@@ -58,8 +43,8 @@ spec:
         url: ./skeleton
         targetPath: .
         values:
-          componentId: ${{ parameters.componentId }}
-          name: ${{ parameters.name }}
+          componentId: ${{ parameters.repoName }}
+          name: ${{ parameters.repoName }}
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
           repo: ${{ parameters.repoName }}
@@ -75,7 +60,6 @@ spec:
       name: Register in Catalog
       action: catalog:register
       input:
-        # We use the remoteUrl from the step above and append the filename
         catalogInfoUrl: ${{ steps['publish-repository'].output.remoteUrl }}/blob/main/catalog-info.yaml
   output:
     links:

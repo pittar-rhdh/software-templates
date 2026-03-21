@@ -1,3 +1,3 @@
 # Docs Repo
 
-[Open in Dev Spaces](https://devspaces.apps.prime.pitt.ca/#https://github.com/pittar-rhdh/${{ parameters.repo }})
+[Open in Dev Spaces](https://devspaces.apps.prime.pitt.ca/#https://github.com/pittar-rhdh/${{ values.repo }})

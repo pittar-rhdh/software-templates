@@ -110,8 +110,7 @@ spec:
       action: catalog:register
       input:
         # FIX: Corrected step ID reference from publishSource to publish-repository
-        repoContentsUrl: ${{ steps['publish-repository'].output.repoContentsUrl }}
-        catalogInfoPath: 'catalog-info.yaml'
+        catalogInfoUrl: ${{ steps['publish-repository'].output.catalogInfoUrl }}
 
   output:
     links:

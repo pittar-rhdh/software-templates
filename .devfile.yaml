@@ -1,0 +1,38 @@
+schemaVersion: 2.2.2
+attributes:
+  controller.devfile.io/storage-type: per-workspace
+metadata:
+  name: "gh-gpts"
+  provider: Andrew Pitt
+  displayName: GitHub Software Templates
+  description: GitHub Software Templates
+  tags:
+    - Templates
+    - DeveloperHub
+  projectType: YAML
+  language: YAML
+projects:
+  - name: "gh-gpts"
+    git:
+      remotes:
+        origin: "https://dev.azure.com/pittar-demos/rhdh-demo/_git/esdcdemo"
+      checkoutFrom:
+        revision: "main"
+        remote: origin
+components:
+  - name: tools
+    container:
+      image: quay.io/pittar/custom-udi-demo:latest
+      cpuLimit: '2'
+      cpuRequest: '100m'
+      memoryLimit: '4G'
+      memoryRequest: '2G'
+      mountSources: true
+commands:
+  - id: configure-opencode
+    exec:
+      component: tools
+      commandLine: "mkdir -p /home/user/.config/opencode && cp /data/opencode/*.* /home/user/.config/opencode/"
+events:
+  postStart:
+    - configure-opencode

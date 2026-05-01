@@ -57,6 +57,11 @@ spec:
           title: Description
           type: string
           description: Project description. Used in documentation.
+        webhookSecret:
+          title: Webhook Secret
+          type: string
+          default: a6j2h82j
+          description: Secret value to authenticate the web hook.
   steps:
     - id: fetch
       name: Fetch Template
@@ -81,6 +86,23 @@ spec:
         repoVisibility: public
         description: Repository created by Backstage template
         topics: ['backstage', 'template', 'quarkus']
+    - id: create-webhook
+      name: Create GitHub Webhook
+      action: github:webhook
+      input:
+        # Use the URL of the repository created in the previous step
+        repoUrl: ${{ steps['publish-repository'].output.remoteUrl }}
+        # The URL of your Tekton EventListener (exposed via Route/Ingress)
+        webhookUrl: webhook-${{ parameters.componentId }}-cicd.apps.prime.pitt.ca
+        # (Optional) A secret token to validate the payload in Tekton
+        webhookSecret: ${{ parameters.webhookSecret }}
+        # events: ['push'] # Default is 'push', add 'pull_request' if needed
+        contentType: json
+        insecureSsl: false
+        # Define your specific triggers here
+        events: 
+          - push
+          - pull_request
     - action: catalog:register
       id: register
       name: Register

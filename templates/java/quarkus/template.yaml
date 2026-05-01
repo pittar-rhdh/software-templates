@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: basic-quarkus
   title: "Basic Quarkus Application"
-  description: Template to create a basic Quarkus application.
+  description: Template to create a basic Quarkus application under pittar-rhdh.
   tags:
     - quarkus
     - starter
@@ -18,6 +18,9 @@ spec:
         repoName:
           type: string
           title: Repository Name
+          description: Name of the GitHub repository
+          # Added a pattern to ensure valid GitHub repo names
+          pattern: '^[a-zA-Z0-9_\-\.]+$'
     - title: Component Information
       required:
         - componentId
@@ -31,15 +34,12 @@ spec:
           type: string
           description: Unique name of the Project. Lower case with no special characters.
           default: mydemoapp
-          pattern: '^([a-z]*)*$'
-          ui:help: Used as the component ID, Maven artifact ID, namespace base, and part of the java package path.
+          pattern: '^[a-z0-9\-]+$'
+          ui:help: Used as the component ID and Maven artifact ID.
         name:
           title: Name
           type: string
-          description: Unique name of the component. Expecting a string that is sequences of [a-zA-Z0-9] separated by any of [-_.], at most 63 characters in total.
-          ui:autofocus: true
-          ui:options:
-            rows: 5
+          description: Human readable name of the component.
         owner:
           title: Owner
           type: string
@@ -52,16 +52,17 @@ spec:
           title: Group ID
           type: string
           default: ca.pitt.demo.idp
-          description: Maven Group ID eg (ca.pitt.demo).  Also used for package name.
+          description: Maven Group ID.
         description:
           title: Description
           type: string
-          description: Project description. Used in documentation.
+          description: Project description.
         webhookSecret:
           title: Webhook Secret
           type: string
           default: a6j2h82j
           description: Secret value to authenticate the web hook.
+
   steps:
     - id: fetch
       name: Fetch Template
@@ -74,42 +75,48 @@ spec:
           name: ${{ parameters.name }}
           groupId: ${{ parameters.groupId }}
           artifactId: ${{ parameters.componentId }}
-          javaPackageName: '${{ parameters.groupId | replace("\.", "/") }}/${{ parameters.componentId }}'
+          javaPackageName: '${{ parameters.groupId | replace(".", "/") }}/${{ parameters.componentId }}'
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
           repo: ${{ parameters.repoName }}
+
     - id: publish-repository
       name: Publish Repository
       action: publish:github
       input:
+        # Enforcing the pittar-rhdh organization here
         repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=pittar-rhdh'
         repoVisibility: public
         description: Repository created by Backstage template
         topics: ['backstage', 'template', 'quarkus']
+
     - id: create-webhook
       name: Create GitHub Webhook
       action: github:webhook
       input:
-        # Use the URL of the repository created in the previous step
-        repoUrl: ${{ steps['publish-repository'].output.remoteUrl }}
-        # The URL of your Tekton EventListener (exposed via Route/Ingress)
-        webhookUrl: webhook-${{ parameters.componentId }}-cicd.apps.prime.pitt.ca
-        # (Optional) A secret token to validate the payload in Tekton
+        # FIX: We use the EXACT same string format as the publish step
+        repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=pittar-rhdh'
+        # FIX: Added https:// prefix
+        webhookUrl: 'https://webhook-${{ parameters.componentId }}-cicd.apps.prime.pitt.ca'
         webhookSecret: ${{ parameters.webhookSecret }}
-        # events: ['push'] # Default is 'push', add 'pull_request' if needed
         contentType: json
         insecureSsl: false
-        # Define your specific triggers here
         events: 
           - push
           - pull_request
-    - action: catalog:register
-      id: register
-      name: Register
+
+    - id: register
+      name: Register in Catalog
+      action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publishSource.output.repoContentsUrl }}
-        catalogInfoPath: catalog-info.yaml
+        # FIX: Corrected step ID reference from publishSource to publish-repository
+        repoContentsUrl: ${{ steps['publish-repository'].output.remoteUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
   output:
     links:
       - title: Repository
-        url: 'https://github.com/pittar-rhdh/${{ parameters.repoName }}'
+        url: ${{ steps['publish-repository'].output.remoteUrl }}
+      - title: Open Component in Catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

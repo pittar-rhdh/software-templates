@@ -15,7 +15,7 @@ projects:
   - name: "gh-gpts"
     git:
       remotes:
-        origin: "https://dev.azure.com/pittar-demos/rhdh-demo/_git/esdcdemo"
+        origin: "https://github.com/pittar-rhdh/software-templates.git"
       checkoutFrom:
         revision: "main"
         remote: origin

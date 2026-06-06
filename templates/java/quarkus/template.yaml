@@ -97,14 +97,14 @@ spec:
         # FIX: We use the EXACT same string format as the publish step
         repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=pittar-rhdh'
         # FIX: Added https:// prefix
-        webhookUrl: 'https://webhook-${{ parameters.componentId }}-cicd.apps.prime.pitt.ca'
+        webhookUrl: 'https://el-github-pr-listener-${{ parameters.componentId }}-cicd.apps.prime.pitt.ca'
         webhookSecret: ${{ parameters.webhookSecret }}
         contentType: json
         insecureSsl: false
         events: 
           - push
           - pull_request
-
+  
     - id: register
       name: Register in Catalog
       action: catalog:register

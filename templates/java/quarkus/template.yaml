@@ -104,13 +104,13 @@ spec:
         events: 
           - push
           - pull_request
-  
+
     - id: register
       name: Register in Catalog
       action: catalog:register
       input:
-        # FIX: Corrected step ID reference from publishSource to publish-repository
-        catalogInfoUrl: ${{ steps['publish-repository'].output.catalogInfoUrl }}
+        repoContentsUrl: ${{ steps['publish-repository'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
 
   output:
     links:

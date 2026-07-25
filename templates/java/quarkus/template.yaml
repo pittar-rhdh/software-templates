@@ -109,8 +109,7 @@ spec:
       name: Register in Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish-repository'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
+        catalogInfoUrl: 'https://github.com/pittar-rhdh/${{ parameters.repoName }}/blob/main/catalog-info.yaml'
 
   output:
     links:

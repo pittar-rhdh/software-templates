@@ -21,7 +21,7 @@ spec:
         - name: apiBaseUrl
           value: 'https://rhaiis-inference-demo.apps.prime.pitt.ca/v1'
         - name: apiModel
-          value: granite-3.1-8b-instruct-quantized.w4a16
+          value: gemma-4-e2b-it
         - name: excludePatterns
           value: '*.txt,package-lock.json,yarn.lock,*.png,*.jpg'
         - name: dryRun

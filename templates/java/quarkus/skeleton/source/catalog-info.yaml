@@ -6,7 +6,7 @@ metadata:
   description: ${{values.description}}
   {%- endif %}
   annotations:
-    backstage.io/source-location: url:${{values.destination}}
+    backstage.io/source-location: 'url:https://github.com/pittar-rhdh/${{ values.repo }}'
     backstage.io/techdocs-ref: dir:.
     #argocd/app-name: ${{values.componentId}}
   tags:

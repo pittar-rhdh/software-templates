@@ -1,0 +1,7 @@
+namespace: ${{values.name}}-cicd
+
+resources:
+  - common
+  - pull-request-review
+  - build-pipeline
+  - eventlistener

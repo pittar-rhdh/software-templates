@@ -3,7 +3,9 @@ namespace: ${{values.name}}-cicd
 resources:
   - githubsecret.yaml
   - triggerbinding.yaml
-  - triggertemplate.yaml
-  - trigger.yaml 
+  - pr-triggertemplate.yaml
+  - pr-trigger.yaml
+  - build-triggertemplate.yaml
+  - build-trigger.yaml
   - eventlistener.yaml
   - eventlistenerroute.yaml

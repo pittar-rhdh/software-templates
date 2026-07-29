@@ -1,0 +1,161 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    backstage.io/kubernetes-id: ${{values.componentId}}
+  name: build-${{values.componentId}}-app
+spec:
+  params:
+    - name: git-repo-url
+      type: string
+      description: Source repository url.
+      default: ${{values.sourceUrl}}
+    - name: image-dest-url                                                                        
+      type: string                                                                                                                             
+      description: External registry location to copy image to
+      default: quay.io/pittar/${{values.componentId}}
+  tasks:
+    - name: git-clone
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: git-clone
+          - name: namespace
+            value: openshift-pipelines
+      params:
+        - name: URL
+          value: '$(params.git-repo-url)'
+        - name: revision
+          value: ''
+        - name: sslVerify
+          value: 'false'
+        - name: deleteExisting
+          value: 'true'
+        - name: userHome
+          value: /home/git
+      workspaces:
+        - name: output
+          workspace: workspace
+    - name: maven
+      runAfter:
+        - git-clone
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: maven
+          - name: namespace
+            value: openshift-pipelines
+      params:
+        - name: MAVEN_IMAGE
+          value: 'registry.redhat.io/ubi8/openjdk-17:latest'
+        - name: GOALS
+          value:
+            - clean
+            - package
+        - name: CONTEXT_DIR
+          value: .
+        - name: MAVEN_MIRROR_URL
+          value: ''
+        - name: SUBDIRECTORY
+          value: .
+      workspaces:
+        - name: source
+          workspace: workspace
+        - name: maven_settings
+          workspace: workspace
+    - name: buildah
+      runAfter:
+        - maven
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: buildah
+          - name: namespace
+            value: openshift-pipelines
+      params:
+        - name: IMAGE
+          value: '$(params.image-dest-url):latest'
+        - name: BUILDER_IMAGE
+          value: 'registry.redhat.io/rhel8/buildah:latest'
+        - name: STORAGE_DRIVER
+          value: vfs
+        - name: DOCKERFILE
+          value: ./Containerfile
+        - name: CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'false'
+        - name: FORMAT
+          value: oci
+      workspaces:
+        - name: source
+          workspace: workspace
+    - name: skopeo-copy
+      runAfter:
+        - buildah
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: skopeo-copy
+          - name: namespace
+            value: openshift-pipelines
+      params:
+        - name: SOURCE_IMAGE_URL
+          value: 'docker://$(params.image-dest-url):latest'
+        - name: DESTINATION_IMAGE_URL
+          value: 'docker://$(params.image-dest-url):dev'
+        - name: SRC_TLS_VERIFY
+          value: 'false'
+        - name: DEST_TLS_VERIFY
+          value: 'false'
+        - name: VERBOSE
+          value: 'false'
+        - name: ARGS
+          value: ''
+      workspaces:
+        - name: images_url
+          workspace: workspace
+    - name: skopeo-copy-qa
+      runAfter:
+        - buildah
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: skopeo-copy
+          - name: namespace
+            value: openshift-pipelines
+      params:
+        - name: SOURCE_IMAGE_URL
+          value: 'docker://$(params.image-dest-url):latest'
+        - name: DESTINATION_IMAGE_URL
+          value: 'docker://$(params.image-dest-url):qa'
+        - name: SRC_TLS_VERIFY
+          value: 'false'
+        - name: DEST_TLS_VERIFY
+          value: 'false'
+        - name: VERBOSE
+          value: 'false'
+        - name: ARGS
+          value: ''
+      workspaces:
+        - name: images_url
+          workspace: workspace
+  workspaces:
+    - name: workspace

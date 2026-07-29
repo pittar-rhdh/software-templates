@@ -29,7 +29,8 @@ spec:
           - name: GIT_REPO
             value: $(tt.params.git-repo-fullname)
 
-        # Mapping the Pipeline workspace to the emptyDir
+        # Mapping the Pipeline workspace to the existing PVC
         workspaces:
           - name: workspace
-            emptyDir: {}
+            persistentVolumeClaim:
+              claimName: workspace

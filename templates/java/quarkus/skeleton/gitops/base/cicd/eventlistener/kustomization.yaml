@@ -1,8 +1,9 @@
-namespace: ${{values.name}}-cicd
+namespace: ${{values.componentId}}-cicd
 
 resources:
   - githubsecret.yaml
-  - triggerbinding.yaml
+  - build-triggerbinding.yaml
+  - pr-triggerbinding.yaml
   - pr-triggertemplate.yaml
   - pr-trigger.yaml
   - build-triggertemplate.yaml

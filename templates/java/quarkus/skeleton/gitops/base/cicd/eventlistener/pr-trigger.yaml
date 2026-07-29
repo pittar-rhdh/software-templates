@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1beta1
 kind: Trigger
 metadata:
-  name: ai-pr-trigger
+  name: pr-trigger
 spec:
   # The ServiceAccount that grants permissions to create the PipelineRun
   serviceAccountName: pipeline

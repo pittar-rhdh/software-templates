@@ -5,5 +5,5 @@ metadata:
 spec:
   serviceAccountName: pipeline
   triggers:
-    - triggerRef: ai-pr-trigger
+    - triggerRef: pr-trigger
     - triggerRef: build-trigger

@@ -6,11 +6,5 @@ spec:
   params:
     - name: git-repo-url
       value: $(body.repository.clone_url)
-    - name: git-revision
-      value: $(body.pull_request.head.sha)
     - name: git-ref
-      value: $(body.pull_request.head.ref)
-    - name: git-repo-name
-      value: $(body.repository.name)
-    - name: git-repo-fullname
-      value: $(body.repository.full_name)
+      value: $(body.ref)

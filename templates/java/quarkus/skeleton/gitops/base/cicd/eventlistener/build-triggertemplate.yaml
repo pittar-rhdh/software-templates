@@ -21,44 +21,16 @@ spec:
       spec:
         pipelineRef:
           name: build-${{values.componentId}}-app
-        
+
         # Mapping Template params to Pipeline params
         params:
           - name: git-repo-url
             value: $(tt.params.git-repo-url)
+          - name: git-ref
+            value: $(tt.params.git-ref)
 
-        # Mapping the Pipeline workspace to the emptyDir
-apiVersion: triggers.tekton.dev/v1beta1
-kind: TriggerTemplate
-metadata:
-  name: build-template
-spec:
-  # Parameters passed from the TriggerBinding
-  params:
-    - name: git-repo-url
-      description: Git repository.
-    - name: git-ref
-      description: The branch/tag to build.
-
-  resourcetemplates:
-    - apiVersion: tekton.dev/v1
-      kind: PipelineRun
-      metadata:
-        generateName: build-run-
-        labels:
-          tekton.dev/pipeline: build-${{values.componentId}}-app
-          triggers.tekton.dev/event: "push"
-      spec:
-        pipelineRef:
-          name: build-${{values.componentId}}-app
-        
-        # Mapping Template params to Pipeline params
-        params:
-          - name: git-repo-url
-            value: $(tt.params.git-repo-url)
-
-        # Mapping the Pipeline workspace to the emptyDir
+        # Mapping the Pipeline workspace to the existing PVC
         workspaces:
           - name: workspace
-            persistentVolumeClaim: 
+            persistentVolumeClaim:
               claimName: workspace

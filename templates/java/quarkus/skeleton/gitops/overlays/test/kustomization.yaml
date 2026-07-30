@@ -1,0 +1,6 @@
+namespace: ${{values.componentId}}-test
+
+resources:
+  - namespace.yaml
+  - ../../base/database
+  - ../../base/app

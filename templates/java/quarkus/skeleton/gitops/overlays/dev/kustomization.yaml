@@ -1,0 +1,6 @@
+namespace: ${{values.componentId}}-dev
+
+resources:
+  - namespace.yaml
+  - ../../base/database
+  - ../../base/app

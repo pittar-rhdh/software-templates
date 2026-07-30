@@ -1,0 +1,6 @@
+namespace: ${{values.componentId}}-prod
+
+resources:
+  - namespace.yaml
+  - ../../base/database
+  - ../../base/app

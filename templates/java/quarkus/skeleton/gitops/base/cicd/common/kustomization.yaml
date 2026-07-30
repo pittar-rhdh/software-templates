@@ -1,3 +1,4 @@
 resources:
-  - namespace.yaml
+  - pipeline-sa.yaml
   - workspace-pvc.yaml
+  - registry-creds-secret.yaml

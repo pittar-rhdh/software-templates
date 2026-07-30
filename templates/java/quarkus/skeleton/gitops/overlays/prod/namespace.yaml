@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: ${{values.componentId}} PROD
+    openshift.io/display-name: ${{values.componentId}} PROD
+  labels:
+    istio-discovery: enabled
+    argocd.argoproj.io/managed-by: openshift-gitops
+    backstage.io/kubernetes-id: ${{values.componentId}}
+    monitoring.rhobs/stack: workload-monitoring
+  name: ${{values.componentId}}-prod

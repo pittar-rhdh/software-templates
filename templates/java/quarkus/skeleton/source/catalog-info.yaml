@@ -13,7 +13,7 @@ metadata:
     - java
     - quarkus
   links:
-    - url: https://github.com/pittar-rhdh/${{ parameters.repoName }}
+    - url: https://github.com/pittar-rhdh/${{ values.repo }}
       title: Open in Dev Spaces
       icon: web
     - url: https://www.redhat.com/en/blog/channel/hybrid-cloud-infrastructure

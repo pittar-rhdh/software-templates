@@ -1,9 +1,0 @@
-apiVersion: triggers.tekton.dev/v1beta1
-kind: EventListener
-metadata:
-  name: github-event-listener
-spec:
-  serviceAccountName: pipeline
-  triggers:
-    - triggerRef: ai-pr-trigger
-    - triggerRef: build-trigger

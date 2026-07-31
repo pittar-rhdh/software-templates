@@ -7,6 +7,7 @@ metadata:
   tags:
     - quarkus
     - starter
+    - java21
 spec:
   owner: default/teamlead
   type: service
@@ -30,10 +31,10 @@ spec:
         - description
       properties:
         componentId:
-          title: Project ID
+          title: Component ID
           type: string
           description: Unique name of the Project. Lower case with no special characters.
-          default: mydemoapp
+          default: myquarkusapp
           pattern: '^[a-z0-9\-]+$'
           ui:help: Used as the component ID and Maven artifact ID.
         name:
@@ -65,11 +66,11 @@ spec:
 
   steps:
     - id: fetch
-      name: Fetch Template
+      name: Fetch Code Template
       action: fetch:template
       input:
-        url: ./skeleton
-        targetPath: .
+        url: ./skeleton/source
+        targetPath: ./source
         values:
           componentId: ${{ parameters.componentId }}
           name: ${{ parameters.name }}
@@ -89,6 +90,31 @@ spec:
         repoVisibility: public
         description: Repository created by Backstage template
         topics: ['backstage', 'template', 'quarkus']
+        sourcePath: ./gitops
+
+    - id: fetch-gitops
+      name: Fetch GitOps Template
+      action: fetch:template
+      input:
+        url: ./skeleton/gitops
+        targetPath: ./gitops
+        values:
+          componentId: ${{ parameters.componentId }}
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          description: ${{ parameters.description }}
+          repo: ${{ parameters.repoName }}
+
+    - id: publish-gitops-repository
+      name: Publish GitOps Repository
+      action: publish:github
+      input:
+        # Enforcing the pittar-rhdh organization here
+        repoUrl: 'github.com?repo=${{ parameters.repoName }}-gitops&owner=pittar-rhdh'
+        repoVisibility: public
+        description: Repository created by Backstage template
+        topics: ['backstage', 'template', 'quarkus']
+        sourcePath: ./gitops
 
     - id: create-webhook
       name: Create GitHub Webhook
@@ -105,6 +131,55 @@ spec:
           - push
           - pull_request
 
+    - id: createArgocdResourcesCICD
+      name: Create the ArgoCD Resources for CICD
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.componentId }}-cicd
+        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+        argoInstance: openshift-gitops
+        namespace: '*'
+        repoUrl: ${{ steps.publishGitOps.output.remoteUrl }}
+        labelValue: ${{ parameters.componentId }}
+        path: 'argocd/cicd'
+
+    - id: createArgocdResourcesDev
+      name: Create the ArgoCD Resources in DEV
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.componentId }}-dev
+        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+        argoInstance: openshift-gitops
+        namespace: '*'
+        repoUrl: ${{ steps.publishGitOps.output.remoteUrl }}
+        labelValue: ${{ parameters.componentId }}
+        path: 'argocd/dev'
+
+    - id: createArgocdResourcesTest
+      name: Create the ArgoCD Resources in TEST
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.componentId }}
+        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+        argoInstance: openshift-gitops
+        namespace: '*'
+        repoUrl: ${{ steps.publishGitOps.output.remoteUrl }}
+        labelValue: ${{ parameters.componentId }}
+        path: 'argocd/test'
+
+
+    - id: createArgocdResourcesProd
+      name: Create the ArgoCD Resources in PROD
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.componentId }}-prod
+        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+        argoInstance: openshift-gitops
+        namespace: '*'
+        repoUrl: ${{ steps.publishGitOps.output.remoteUrl }}
+        labelValue: ${{ parameters.componentId }}
+        path: 'argocd/prod'
+
     - id: register
       name: Register in Catalog
       action: catalog:register
@@ -113,8 +188,12 @@ spec:
 
   output:
     links:
-      - title: Repository
+      - title: Open in Dev Spaces
+        url: https://devspaces.apps.prime.pitt.ca/#${{ steps['publish-repository'].output.remoteUrl }}
+      - title: Source Repository
         url: ${{ steps['publish-repository'].output.remoteUrl }}
+      - title: GitOps Repository
+        url: ${{ steps['publish-gitops-repository'].output.remoteUrl }}
       - title: Open Component in Catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}

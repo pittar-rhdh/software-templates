@@ -131,54 +131,53 @@ spec:
           - push
           - pull_request
 
-    - id: createArgocdResourcesCICD
-      name: Create the ArgoCD Resources for CICD
-      action: argocd:create-resources
-      input:
-        appName: ${{ parameters.componentId }}-cicd
-        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
-        argoInstance: openshift-gitops
-        namespace: '*'
-        repoUrl: ${{ steps.publishGitOps.output.remoteUrl }}
-        labelValue: ${{ parameters.componentId }}
-        path: 'argocd/cicd'
-
-    - id: createArgocdResourcesDev
-      name: Create the ArgoCD Resources in DEV
-      action: argocd:create-resources
-      input:
-        appName: ${{ parameters.componentId }}-dev
-        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
-        argoInstance: openshift-gitops
-        namespace: '*'
-        repoUrl: ${{ steps.publishGitOps.output.remoteUrl }}
-        labelValue: ${{ parameters.componentId }}
-        path: 'argocd/dev'
-
-    - id: createArgocdResourcesTest
-      name: Create the ArgoCD Resources in TEST
+    - id: createArgocdResourcesPRIME
+      name: Create the ArgoCD Resources for PRIME
       action: argocd:create-resources
       input:
         appName: ${{ parameters.componentId }}
         # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
         argoInstance: openshift-gitops
         namespace: '*'
-        repoUrl: ${{ steps.publishGitOps.output.remoteUrl }}
+        repoUrl: ${{ steps.publish-gitops-repository.output.remoteUrl }}
         labelValue: ${{ parameters.componentId }}
-        path: 'argocd/test'
+        path: 'argocd/prime'
 
+    # - id: createArgocdResourcesDev
+    #   name: Create the ArgoCD Resources in DEV
+    #   action: argocd:create-resources
+    #   input:
+    #     appName: ${{ parameters.componentId }}-dev
+    #     # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+    #     argoInstance: openshift-gitops
+    #     namespace: '*'
+    #     repoUrl: ${{ steps.publish-gitops-repository.output.remoteUrl }}
+    #     labelValue: ${{ parameters.componentId }}
+    #     path: 'argocd/dev'
 
-    - id: createArgocdResourcesProd
-      name: Create the ArgoCD Resources in PROD
-      action: argocd:create-resources
-      input:
-        appName: ${{ parameters.componentId }}-prod
-        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
-        argoInstance: openshift-gitops
-        namespace: '*'
-        repoUrl: ${{ steps.publishGitOps.output.remoteUrl }}
-        labelValue: ${{ parameters.componentId }}
-        path: 'argocd/prod'
+    # - id: createArgocdResourcesTest
+    #   name: Create the ArgoCD Resources in TEST
+    #   action: argocd:create-resources
+    #   input:
+    #     appName: ${{ parameters.componentId }}
+    #     # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+    #     argoInstance: openshift-gitops
+    #     namespace: '*'
+    #     repoUrl: ${{ steps.publish-gitops-repository.output.remoteUrl }}
+    #     labelValue: ${{ parameters.componentId }}
+    #     path: 'argocd/test'
+
+    # - id: createArgocdResourcesProd
+    #   name: Create the ArgoCD Resources in PROD
+    #   action: argocd:create-resources
+    #   input:
+    #     appName: ${{ parameters.componentId }}-prod
+    #     # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+    #     argoInstance: openshift-gitops
+    #     namespace: '*'
+    #     repoUrl: ${{ steps.publish-gitops-repository.output.remoteUrl }}
+    #     labelValue: ${{ parameters.componentId }}
+    #     path: 'argocd/prod'
 
     - id: register
       name: Register in Catalog

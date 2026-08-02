@@ -1,0 +1,7 @@
+namespace: openshift-gitops
+
+resources:
+  - ../cicd
+  - ../dev
+  - ../test
+  - ../prod

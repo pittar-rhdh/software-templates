@@ -139,7 +139,7 @@ spec:
         # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
         argoInstance: openshift-gitops
         namespace: '*'
-        repoUrl: ${{ steps.publish-gitops-repository.output.remoteUrl }}
+        repoUrl: ${{ steps['publish-gitops-repository'].output.remoteUrl }}
         labelValue: ${{ parameters.componentId }}
         path: 'argocd/prime'
 

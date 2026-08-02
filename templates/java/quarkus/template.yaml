@@ -90,7 +90,7 @@ spec:
         repoVisibility: public
         description: Repository created by Backstage template
         topics: ['backstage', 'template', 'quarkus']
-        sourcePath: ./gitops
+        sourcePath: ./source
 
     - id: fetch-gitops
       name: Fetch GitOps Template

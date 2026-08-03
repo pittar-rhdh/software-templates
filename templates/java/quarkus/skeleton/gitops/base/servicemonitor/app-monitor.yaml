@@ -1,0 +1,14 @@
+apiVersion: monitoring.rhobs/v1
+kind: ServiceMonitor
+metadata:
+  name: ${{values.componentId}}
+  labels:
+    metrics: workload-monitor
+spec:
+  endpoints:
+    - interval: 30s
+      path: /metrics
+      port: ${{values.componentId}}
+  selector:
+    matchLabels:
+      metrics: workload-monitor

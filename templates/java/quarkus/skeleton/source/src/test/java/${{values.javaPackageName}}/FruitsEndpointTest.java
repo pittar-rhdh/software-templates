@@ -1,4 +1,4 @@
-package ${{values.javaPackageName}};
+package ${{values.groupId}}.${{values.artifactId}};
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;

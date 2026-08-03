@@ -1,4 +1,4 @@
-package ${{values.javaPackageName}}.resource;
+package ${{values.groupId}}.${{values.artifactId}}.resource;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

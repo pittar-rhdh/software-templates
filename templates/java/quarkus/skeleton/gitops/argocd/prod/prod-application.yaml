@@ -18,7 +18,7 @@ spec:
   project: ${{values.componentId}}
   source:
     path: overlays/prod
-    repoURL: ${{values.repoUrl}}
+    repoURL: https://github.com/pittar-rhdh/${{values.repo}}.git
     targetRevision: main
   syncPolicy:
     automated:

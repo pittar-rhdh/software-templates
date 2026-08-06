@@ -4,3 +4,8 @@ resources:
   - namespace.yaml
   - ../../base/database
   - ../../base/app
+
+images:
+  - name: ${{values.componentId}}
+    newName: quay.io/pittar-rhdh/${{values.componentId}}
+    newTag: latest

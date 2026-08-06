@@ -8,15 +8,18 @@ metadata:
   annotations:
     backstage.io/source-location: 'url:https://github.com/pittar-rhdh/${{ values.repo }}'
     backstage.io/techdocs-ref: dir:.
-    #argocd/app-name: ${{values.componentId}}
+    backstage.io/kubernetes-id: ${{values.componentId}}
+    janus-idp.io/tekton: ${{values.componentId}}
+    argocd/app-selector: rht-gitops.com/openshift-gitops=${{values.componentId}}
+    acs/deployment-name: "${{values.componentId}},postgresql-${{values.componentId}}"
   tags:
     - java
     - quarkus
   links:
-    - url: https://github.com/pittar-rhdh/${{ values.repo }}
+    - url: https://devspaces.apps.prime.pitt.ca/#https://github.com/pittar-rhdh/${{ parameters.repo }}
       title: Open in Dev Spaces
       icon: web
-    - url: https://www.redhat.com/en/blog/channel/hybrid-cloud-infrastructure
+    - url: https://developers.redhat.com/blog
       title: Red Hat Blog
       icon: web
 spec:

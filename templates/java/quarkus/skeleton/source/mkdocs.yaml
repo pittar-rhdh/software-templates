@@ -1,6 +1,6 @@
 site_name: ${{ values.componentId }}
 site_description: ${{ values.description }}
-repo_url: ${{ values.destination }}
+repo_url: https://github.com/pittar-rhdh/${{ values.repo }}
 
 plugins:
   - techdocs-core

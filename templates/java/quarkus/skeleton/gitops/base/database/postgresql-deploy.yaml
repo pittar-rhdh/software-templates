@@ -13,7 +13,7 @@ spec:
   strategy:
     type: Recreate
   replicas: 1
-  revisionHistoryLimit: 10
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       name: postgresql-${{values.componentId}}

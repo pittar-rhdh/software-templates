@@ -55,7 +55,7 @@ spec:
             value: openshift-pipelines
       params:
         - name: MAVEN_IMAGE
-          value: 'registry.redhat.io/ubi8/openjdk-17:latest'
+          value: 'registry.redhat.io/ubi9/openjdk-21:latest'
         - name: GOALS
           value:
             - clean

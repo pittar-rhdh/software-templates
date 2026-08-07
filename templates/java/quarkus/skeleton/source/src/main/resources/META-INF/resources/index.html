@@ -24,6 +24,41 @@
 
 <div class="container">
     <h1>Welcome to Quarkus!</h1>
+
+    <h2>Fruit Management API</h2>
+    <p>This is a <strong>Fruit Management API</strong> built with Java 21 and Quarkus 3.33, providing RESTful interfaces for CRUD operations on fruits.</p>
+    <p><strong>Delete this file once you start coding.</strong></p>
+
+    <h3>About the Implementation</h3>
+    <p>The "Fruit" resources in this application serve as a <strong>comprehensive example</strong> demonstrating:</p>
+    <ul>
+        <li><strong>Contract-First API Development</strong> - OpenAPI specification driving interface generation</li>
+        <li><strong>Domain-Driven Design</strong> - Separation between API models and Panache entities</li>
+        <li><strong>CRUD Operations</strong> - Complete create, read, update, delete functionality</li>
+        <li><strong>Data Persistence</strong> - Hibernate/Panache with PostgreSQL</li>
+        <li><strong>Testing Strategy</strong> - Unit and integration tests with JUnit 5 and REST Assured</li>
+    </ul>
+
+    <h3>How to Model Your Application</h3>
+    <p>Use this Fruit implementation as a template for your actual business functionality:</p>
+    <ol>
+        <li><strong>Start with OpenAPI</strong> - Define your API contract in <code>src/main/openapi/openapi.yaml</code></li>
+        <li><strong>Generate Interfaces</strong> - Run <code>mvn package</code> to create API interfaces</li>
+        <li><strong>Implement Business Logic</strong> - Follow the pattern in <code>src/main/java/ca/pitt/demo/idp/andrewq8/api/impl/</code></li>
+        <li><strong>Create Domain Entities</strong> - Model your data in <code>src/main/java/ca/pitt/demo/idp/andrewq8/domain/</code></li>
+        <li><strong>Add Tests</strong> - Follow the testing approach used for Fruit endpoints</li>
+    </ol>
+
+    <h3>Key Technologies</h3>
+    <ul>
+        <li><strong>Java 21</strong> - Latest Java features and performance</li>
+        <li><strong>Quarkus 3.33</strong> - Supersonic Subatomic Java framework</li>
+        <li><strong>PostgreSQL</strong> - Production database (H2 for tests)</li>
+        <li><strong>Hibernate/Panache</strong> - Modern ORM and data access</li>
+        <li><strong>OpenAPI 3.0</strong> - Contract-first API development</li>
+    </ul>
+
+    <p><em>This application demonstrates best practices for building production-ready REST APIs with Quarkus.</em></p>
 </div>
 
 </body>

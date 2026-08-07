@@ -6,7 +6,7 @@ metadata:
   description: ${{values.description}}
   {%- endif %}
   annotations:
-    backstage.io/source-location: url:https://github.com/pittar-rhdh/${{ values.repo }}
+    backstage.io/source-location: url:https://github.com/pittar-rhdh/${{ values.repo }}/
     backstage.io/techdocs-ref: dir:.
     backstage.io/kubernetes-id: ${{values.componentId}}
     janus-idp.io/tekton: ${{values.componentId}}

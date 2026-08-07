@@ -104,6 +104,8 @@ spec:
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
           repo: ${{ parameters.repoName }}
+          webhookSecret: ${{ parameters.webhookSecret }}
+
 
     - id: publish-gitops-repository
       name: Publish GitOps Repository

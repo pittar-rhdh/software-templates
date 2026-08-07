@@ -44,8 +44,8 @@
     <ol>
         <li><strong>Start with OpenAPI</strong> - Define your API contract in <code>src/main/openapi/openapi.yaml</code></li>
         <li><strong>Generate Interfaces</strong> - Run <code>mvn package</code> to create API interfaces</li>
-        <li><strong>Implement Business Logic</strong> - Follow the pattern in <code>src/main/java/ca/pitt/demo/idp/andrewq8/api/impl/</code></li>
-        <li><strong>Create Domain Entities</strong> - Model your data in <code>src/main/java/ca/pitt/demo/idp/andrewq8/domain/</code></li>
+        <li><strong>Implement Business Logic</strong> - Follow the pattern in <code>src/main/java/${{values.javaPackageName}}/${{values.componentId}}/api/impl/</code></li>
+        <li><strong>Create Domain Entities</strong> - Model your data in <code>src/main/java/${{values.javaPackageName}}/${{values.componentId}}/domain/</code></li>
         <li><strong>Add Tests</strong> - Follow the testing approach used for Fruit endpoints</li>
     </ol>
 

@@ -12,9 +12,9 @@ import org.junit.jupiter.api.MethodOrderer;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.TestTransaction;
 
-import ca.pitt.demo.idp.andrewq8.api.model.Fruit;
-import ca.pitt.demo.idp.andrewq8.api.model.FruitInput;
-import ca.pitt.demo.idp.andrewq8.domain.FruitEntity;
+import ${{values.groupId}}.${{values.artifactId}}.api.model.Fruit;
+import ${{values.groupId}}.${{values.artifactId}}.api.model.FruitInput;
+import ${{values.groupId}}.${{values.artifactId}}.domain.FruitEntity;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 

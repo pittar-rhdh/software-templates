@@ -11,7 +11,7 @@ spec:
     - name: git-repo-url
       type: string
       description: Source repository url.
-      default: ${{values.sourceUrl}}
+      default: https://github.com/pittar-rhdh/${{values.repo}}.git
     - name: image-dest-url                                                                        
       type: string                                                                                                                             
       description: External registry location to copy image to
@@ -50,12 +50,10 @@ spec:
           - name: kind
             value: task
           - name: name
-            value: maven
+            value: maven-java-21
           - name: namespace
             value: openshift-pipelines
       params:
-        - name: MAVEN_IMAGE
-          value: 'registry.redhat.io/ubi9/openjdk-21:latest'
         - name: GOALS
           value:
             - clean

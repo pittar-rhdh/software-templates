@@ -26,3 +26,18 @@ spec:
   type: service
   lifecycle: production
   owner: ${{values.owner}}
+  providesApis:
+    - andrewq8
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: ${{values.componentId}}
+  title: ${{values.name}} OpenAPI Specification
+  description: REST API endpoints for the ${{values.name}} application
+spec:
+  type: openapi
+  lifecycle: production
+  owner: ${{values.owner}}
+  definition:
+    $text: ./src/main/openapi/openapi.yaml
